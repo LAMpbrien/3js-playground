@@ -46,31 +46,43 @@ orchidTag.appendChild( renderer.domElement );
 
 //lighting
 const ambience = new THREE.AmbientLight( 0x404040 ); // soft white light
-scene.add( ambience );
+camera.add( ambience );
 
 const keyLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 keyLight.position.set(-1,1,3)
-scene.add( keyLight );
+camera.add( keyLight );
 
 const fillLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 fillLight.position.set(1,1,3)
-scene.add( fillLight );
+camera.add( fillLight );
 
 const backLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
 backLight.position.set(-1,3,-1)
-scene.add( backLight );
+camera.add( backLight );
+
+scene.add(camera)
 
 // shape+material
 
-const geometry = new THREE.TorusKnotGeometry( 1, 0.25, 100, 16 ); 
-const material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } ); 
-const torusKnot = new THREE.Mesh( geometry, material ); scene.add( torusKnot );
+const geometry = new THREE.TorusKnotGeometry( 1, 0.25, 100, 16 )
+const material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } )
+const torusKnot = new THREE.Mesh( geometry, material )
+scene.add( torusKnot )
+
+
+// Controls
+const controls = new OrbitControls (camera, renderer.domElement)
+controls.enableZoom = false
+controls.enablePan = false
+controls.autoRotate = true
+controls.autoRotateSpeed = 2
+controls.update()
+
 
 camera.position.z = 5;
 
 function render() {
-  torusKnot.rotation.x += 0.01;
-  torusKnot.rotation.y += 0.01;
+  controls.update()
 	renderer.render( scene, camera );
 }
 renderer.setAnimationLoop( render );
